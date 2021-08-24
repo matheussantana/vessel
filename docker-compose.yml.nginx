@@ -1,0 +1,12 @@
+version: "3"
+services:
+
+  web:
+    image: nginx
+    volumes:
+      - ${DOCUMENT_ROOT-./stdio/www}:/var/www/html
+    ports:
+     - "8080:80"
+    environment:
+     - NGINX_HOST=foobar.com
+     - NGINX_PORT=80

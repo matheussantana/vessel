@@ -1,0 +1,25 @@
+version: "3"
+services:
+
+  webserver-ssl:
+    user: root
+
+    build:
+      context: ./bin/webserver-ssl
+    container_name: '7.3.x-webserver-ssl'
+    restart: 'always'
+    ports:
+      - "80:80"
+      - "443:443"
+    #links:
+    #  - mysql
+    volumes:
+      #- ${DOCUMENT_ROOT}:/var/www/html
+      # centos
+      #- ${PHP_INI}:/etc/php.ini
+      # apache
+      - ${PHP_INI}:/usr/local/etc/php/php.ini
+      - ./stdio/config/snippets:/etc/apache2/snippets/
+      - ./stdio/config/vhosts-ssl:/etc/apache2/sites-enabled
+      - ${APACHE_LOG_DIR}:/var/log/apache2
+      - ./stdio/config/ssl-keys/:/etc/letsencrypt/live/localhost.info/

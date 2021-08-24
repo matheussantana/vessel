@@ -1,0 +1,66 @@
+version: "3"
+
+volumes:
+  files:
+    driver: local
+  mysql:
+    driver: local
+  redis:
+    driver: local
+
+services:
+  owncloud:
+    image: owncloud/server:${OWNCLOUD_VERSION}
+    container_name: owncloud_server
+    restart: always
+    ports:
+      - ${OWNCLOUD_HTTP_PORT}:8080
+    #depends_on:
+      #- db
+      #- redis-owncloud
+    environment:
+      - OWNCLOUD_DOMAIN=${OWNCLOUD_DOMAIN}
+      #- OWNCLOUD_DB_TYPE=pgsql
+      #- OWNCLOUD_DB_NAME=owncloud
+      #- OWNCLOUD_DB_USERNAME=owncloud
+      #- OWNCLOUD_DB_PASSWORD=owncloud
+      #- OWNCLOUD_DB_HOST=127.0.0.1
+      #- OWNCLOUD_DB_PORT=3307
+      - OWNCLOUD_ADMIN_USERNAME=${OWNCLOUD_ADMIN_USERNAME}
+      - OWNCLOUD_ADMIN_PASSWORD=${OWNCLOUD_ADMIN_PASSWORD}
+      #- OWNCLOUD_MYSQL_UTF8MB4=true
+      #- OWNCLOUD_REDIS_ENABLED=true
+      #- OWNCLOUD_REDIS_HOST=127.0.0.1
+      #- OWNCLOUD_REDIS_PORT=7379 #6379
+    healthcheck:
+      test: ["CMD", "/usr/bin/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - files:/mnt/data
+
+  #db:
+  #  image: postgres:${DOCKER_POSTGRES_TAG:-9.6}
+  #  restart: always
+  #  environment:
+  #    - POSTGRES_USER=owncloud
+  #    - POSTGRES_PASSWORD=owncloud
+  #    - POSTGRES_DB=owncloud
+    #ports:
+    #  - "5432:5432"
+
+  #redis-owncloud:
+  #  image: redis:6
+  #  container_name: owncloud_redis
+  #  restart: always
+  #  command: ["--databases", "1"]
+  #  healthcheck:
+  #    test: ["CMD", "redis-cli", "ping"]
+  #    interval: 10s
+  #    timeout: 5s
+  #    retries: 5
+  #  ports:
+  #    - "6379:6379"
+  #  volumes:
+  #    - redis:/data

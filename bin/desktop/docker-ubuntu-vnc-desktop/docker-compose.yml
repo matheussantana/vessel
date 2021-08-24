@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  desktop:
+    build: .
+    ports:
+       - "6080:80"
+    volumes:
+      - /dev/shm:/dev/shm
