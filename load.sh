@@ -7,7 +7,7 @@ FILE="/tmp/secure.7z"
 if test -f "$FILE"; then
     echo "$FILE exist"
 else
-    #wget -O /tmp/secure.7z https://s3.amazonaws.com/systemcall.info/fs/secure.7z
+    #wget -O /tmp/secure.7z https://s3.amazonaws.com/endpoint/file.7z
     mv secure.7z /tmp/
     cd /tmp/
     mkdir secure
